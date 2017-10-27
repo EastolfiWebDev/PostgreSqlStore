@@ -1,0 +1,29 @@
+{
+  "name": "postgre-sql-store",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/unit/**/*.spec.ts",
+    "build": "tsc -p ./tsconfig.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsw-logger": "^1.2.4",
+    "lodash": "^4.17.4",
+    "mongo-portable": "https://github.com/EastolfiWebDev/MongoPortable#v2.0.0",
+    "pg-promise": "^7.0.3",
+    "promise": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.47",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "ts-node": "^3.3.0",
+    "tsconfig-paths": "^2.3.0",
+    "typescript": "^2.5.3"
+  }
+}
