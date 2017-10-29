@@ -246,7 +246,7 @@ mocha@^4.0.1:
 
 "mongo-portable@https://github.com/EastolfiWebDev/MongoPortable#v2.0.0":
   version "2.0.0-rc1"
-  resolved "https://github.com/EastolfiWebDev/MongoPortable#bcf1148a55da8624077e8b6b5a96b0fe6205071b"
+  resolved "https://github.com/EastolfiWebDev/MongoPortable#0e7b780f666a7536de519c49b103d344faa7c114"
   dependencies:
     jsw-logger "^1.2.0"
     lodash "^4.17.4"

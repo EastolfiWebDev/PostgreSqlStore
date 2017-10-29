@@ -15,7 +15,7 @@ export class PostgreSqlStore extends BaseStore {
 	constructor(options: any = {}) {
 	    super();
 	    
-	    this.options = options;
+	    this.options = _.assign({}, {}, options);
 	    
 		this.logger = JSWLogger.getInstance(this.options.log || {});
 		

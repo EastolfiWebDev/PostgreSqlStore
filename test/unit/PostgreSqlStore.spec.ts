@@ -5,6 +5,8 @@ import { MongoPortable } from "mongo-portable";
 import { TestHelper } from "../helper/test.helper";
 import { PostgreSqlStore } from "../../index";
 
+TestHelper.initLogger();
+
 var db = null;
 describe("PostgreSqlStore", function() {
 	before(function() {
@@ -25,26 +27,63 @@ describe("PostgreSqlStore", function() {
             expect(PostgreSqlStore).to.exist;
         });
         
-        it("should be able to instantiate a new store", function() {
-            // Store with default values
-            let store = new PostgreSqlStore();
+        it("should not be able to instantiate a new store without connection options", function() {
+            TestHelper.assertThrown(() => {
+                new PostgreSqlStore();
+            }, true);
             
-            expect(store).to.exist;
-            expect(store.options).to.exist;
+            TestHelper.assertThrown(() => {
+                new PostgreSqlStore({ connection: null });
+            }, true);
+        });
+        
+        it("should not be able to instantiate a new store with invalid connection options", function() {
+            // Number is invalid
+            TestHelper.assertThrown(() => {
+                new PostgreSqlStore({ connection: 1 });
+            }, true);
             
-            // expect(store.options.ddbb_path).to.be.equal(TestHelper.DDBB_PATH_DEF);
+            // Boolean is invalid
+            TestHelper.assertThrown(() => {
+                new PostgreSqlStore({ connection: true });
+            }, true);
             
-            // TestHelper.assertDir(TestHelper.DDBB_PATH_DEF, true, 0);
+            // Array is invalid
+            TestHelper.assertThrown(() => {
+                new PostgreSqlStore({ connection: [""] });
+            }, true);
             
-            // Store with custom values
-            store = TestHelper.createStore();
+            // Function is invalid
+            TestHelper.assertThrown(() => {
+                new PostgreSqlStore({ connection: function () { return ""; } });
+            }, true);
             
-            expect(store).to.exist;
-            expect(store.options).to.exist;
+        });
+        
+        describe("Instantiating a new store", function() {
+            it("should be able to instantiate with a connection string", function() {
+                // Store with default values
+                let store = TestHelper.createStore({ connection: "postgres://test_user:1234@postgre.test.com:5432/db_tests" });
+                
+                expect(store).to.exist;
+                expect(store.options).to.exist;
+            });
             
-            // expect(store.options.ddbb_path).to.be.equal(TestHelper.DDBB_PATH);
-            
-            // TestHelper.assertDir(TestHelper.DDBB_PATH, true, 0);
+            it("should be able to instantiate with a connection object", function() {
+                // Store with default values
+                let store = TestHelper.createStore({
+                    connection: {
+                        host: "postgre.test.com",
+                        database: "db_tests",
+                        user: "test_user",
+                        password: "1234",
+                        port: "5432",
+                    }
+                });
+                
+                expect(store).to.exist;
+                expect(store.options).to.exist;
+            });
         });
     });
 	
