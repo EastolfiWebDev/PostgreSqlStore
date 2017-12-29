@@ -12,7 +12,8 @@ export class BaseModel implements IBaseModel {
 	logger: JSWLogger;
 	
 	constructor(options: any = {}) {
-		this.logger = JSWLogger.getInstance(options.log || {});
+		//this.logger = JSWLogger.getInstance(options.log || {});
+		this.logger = JSWLogger.instance;
 	}
 	
 	fillModel(doc: any): void {

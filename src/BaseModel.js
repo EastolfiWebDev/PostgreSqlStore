@@ -5,7 +5,8 @@ var Promise = require("promise");
 var BaseModel = /** @class */ (function () {
     function BaseModel(options) {
         if (options === void 0) { options = {}; }
-        this.logger = jsw_logger_1.JSWLogger.getInstance(options.log || {});
+        //this.logger = JSWLogger.getInstance(options.log || {});
+        this.logger = jsw_logger_1.JSWLogger.instance;
     }
     BaseModel.prototype.fillModel = function (doc) {
         // Do nothing

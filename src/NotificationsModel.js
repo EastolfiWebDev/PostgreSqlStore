@@ -54,11 +54,13 @@ var NotificationsModel = /** @class */ (function (_super) {
         return _this;
     }
     NotificationsModel.prototype.fillModel = function (doc) {
-        this._id = doc._id || null;
-        this.type = doc.type || "warning";
-        this.active = doc.active ? "Y" : "N";
-        this.message = doc.message || null;
-        this.timestamp = "" + doc.timestamp || null;
+        if (doc) {
+            this._id = doc._id || null;
+            this.type = doc.type || "warning";
+            this.active = doc.active ? "Y" : "N";
+            this.message = doc.message || null;
+            this.timestamp = "" + doc.timestamp || null;
+        }
     };
     NotificationsModel.prototype._toMongoDoc = function (doc) {
         var parsed = _.cloneDeep(doc);
@@ -101,9 +103,10 @@ var NotificationsModel = /** @class */ (function (_super) {
         });
     };
     NotificationsModel.prototype.update = function (selector, modifier) {
+        var _this = this;
         return new Promise(function (resolve, reject) {
-            var updateDoc = this._toPostgreDoc(modifier);
-            var selectorDoc = this._toPostgreDoc(selector);
+            var updateDoc = _this._toPostgreDoc(modifier);
+            var selectorDoc = _this._toPostgreDoc(selector);
             var queryUpdate = [];
             var querySelector = [];
             var updateValues = [];
@@ -136,15 +139,15 @@ var NotificationsModel = /** @class */ (function (_super) {
                 }
                 finally { if (e_2) throw e_2.error; }
             }
-            var query = this.UPDATE_QUERY
+            var query = _this.UPDATE_QUERY
                 .replace("%_UPDATE_%", queryUpdate.join(","))
                 .replace("%_SELECTOR_%", querySelector.join(","));
-            this.client.query(query, __spread(updateValues, selectorValues))
+            _this.client.query(query, __spread(updateValues, selectorValues))
                 .then(function (data) {
                 var docs = [];
                 var indexes = {};
                 for (var i in data) {
-                    var doc = this._toMongoDoc(data[i]);
+                    var doc = _this._toMongoDoc(data[i]);
                     if (doc != null) {
                         docs.push(doc);
                         indexes[doc._id] = i;
@@ -161,12 +164,12 @@ var NotificationsModel = /** @class */ (function (_super) {
     NotificationsModel.prototype.find = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this.client.db.any("SELECT * FROM " + NotificationsModel.COLLECTION_NAME)
+            _this.client.any("SELECT * FROM " + NotificationsModel.COLLECTION_NAME)
                 .then(function (data) {
                 var docs = [];
                 var indexes = {};
                 for (var i = 0; i < data.length; i++) {
-                    var doc = this._toMongoDoc(data[i]);
+                    var doc = _this._toMongoDoc(data[i]);
                     if (doc != null) {
                         docs.push(doc);
                         indexes[doc._id] = i;

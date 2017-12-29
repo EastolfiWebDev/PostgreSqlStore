@@ -1,0 +1,16 @@
+lib
+
+npm-debug.log
+
+.coveralls.yml
+
+test/coverage
+test/results
+
+.nyc_output
+coverage
+node_modules
+
+logs/*
+
+.publish

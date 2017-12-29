@@ -51,7 +51,7 @@ var PostgreSqlStore = /** @class */ (function (_super) {
     function PostgreSqlStore(options) {
         if (options === void 0) { options = {}; }
         var _this = _super.call(this) || this;
-        _this.options = options;
+        _this.options = _.assign({}, {}, options);
         _this.logger = jsw_logger_1.JSWLogger.getInstance(_this.options.log || {});
         if (_.isNil(_this.options.connection)) {
             _this.logger.throw("Missing connection options");

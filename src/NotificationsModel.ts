@@ -23,11 +23,13 @@ export class NotificationsModel extends BaseModel {
 	}
 	
 	fillModel(doc: any): void {
-		this._id = doc._id || null;
-		this.type = doc.type || "warning";
-		this.active = doc.active ? "Y" : "N";
-		this.message = doc.message || null;
-		this.timestamp = `${doc.timestamp}` || null;
+		if (doc) {
+			this._id = doc._id || null;
+			this.type = doc.type || "warning";
+			this.active = doc.active ? "Y" : "N";
+			this.message = doc.message || null;
+			this.timestamp = `${doc.timestamp}` || null;
+		}
 	}
 	
 	private _toMongoDoc(doc: any) {
@@ -80,7 +82,7 @@ export class NotificationsModel extends BaseModel {
 	}
 	
 	update(selector, modifier): Promise<Result> {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             let updateDoc = this._toPostgreDoc(modifier);
             let selectorDoc = this._toPostgreDoc(selector);
     	    
@@ -105,7 +107,7 @@ export class NotificationsModel extends BaseModel {
                 .replace("%_SELECTOR_%", querySelector.join(","));
             
             this.client.query(query, [...updateValues, ...selectorValues])
-            .then(function (data) {
+            .then(data => {
                 let docs = [];
 				let indexes = {};
 				
@@ -120,7 +122,7 @@ export class NotificationsModel extends BaseModel {
 				
 				resolve({ docs, indexes });
             })
-            .catch(function (error) {
+            .catch(error => {
                 reject(new Error(error));
             });
     	});
@@ -128,8 +130,8 @@ export class NotificationsModel extends BaseModel {
 	
 	find(): Promise<Result> {
 	    return new Promise((resolve, reject) => {
-			this.client.db.any(`SELECT * FROM ${NotificationsModel.COLLECTION_NAME}`)
-			.then(function (data) {
+			this.client.any(`SELECT * FROM ${NotificationsModel.COLLECTION_NAME}`)
+			.then(data => {
 				let docs = [];
 				let indexes = {};
 				
@@ -144,7 +146,7 @@ export class NotificationsModel extends BaseModel {
 				
 				resolve({ docs, indexes });
 			})
-			.catch(function (error) {
+			.catch(error => {
 				reject(new Error(error));
 			});
 		});
